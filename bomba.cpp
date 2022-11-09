@@ -1,20 +1,47 @@
 #include "bomba.h"
 
-Bomba::Bomba( double x, double y, int r)
+Bomba::Bomba()
 {
-    posx = x;
-    posy = y;
-    this->r = r;
+    x = 100, y = 100, radio = 25;
+    setPos(x,y);
+}
+
+Bomba::Bomba(int x, int y, int radio)
+{
+    this->x=x;
+    this->y=y;
+    this->radio=radio;
+    setPos(x,y);
 }
 
 QRectF Bomba::boundingRect() const
 {
-    return QRectF(posx,posy, 2*r, 2*r);
+    return QRectF(x,y,2*radio,2*radio);
 }
-// Dibujamos la bomba
+
 void Bomba::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     painter->setBrush(Qt::black);
     painter->drawEllipse(boundingRect());
 }
 
+bool Bomba::explocion()
+{
+    explota = true;
+}
+
+void Bomba::detonarBomba()
+{
+    detonada = true;
+}
+
+void Bomba::cuentaRegresiva()
+{
+    if(detonada){
+        if(tiempo > 0){
+            tiempo--;
+        }else{
+            explocion();
+        }
+    }
+}
