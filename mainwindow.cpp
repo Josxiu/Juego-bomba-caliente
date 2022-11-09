@@ -6,6 +6,15 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    scene = new QGraphicsScene();
+    ui->escena->setScene(scene);
+
+    bomba = new Bomba(); //Se crea un objeto de tipo bomba
+    scene->addItem(bomba); //Agrega la bomba a la escena
+
+    connect(timer, SIGNAL(timeout()), this, SLOT(actualizarEstado())); //Cada segundo actualiza el estado del juego
+    iniciarJuego();
 }
 
 MainWindow::~MainWindow()
@@ -13,3 +22,21 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::actualizarEstado(){
+    bomba->cuentaRegresiva();
+}
+
+void MainWindow::detonarBomba(){
+    bomba->detonarBomba();
+}
+
+void MainWindow::eliminarBomba(){
+    if(bomba->explocion()==true){
+        scene->removeItem(bomba);
+    }
+}
+
+void MainWindow::iniciarJuego(){
+    detonarBomba();
+    timer->start(1000);
+}
