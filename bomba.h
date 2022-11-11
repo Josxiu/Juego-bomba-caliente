@@ -19,6 +19,14 @@ public:
     bool explocion();
     void detonarBomba();
     void cuentaRegresiva();
+    void parpadear();
+
+    int setX(int x);
+    int setY(int y);
+    int moverBomba(int x, int y);
+
+    int getX();
+    int getY();
 };
 
 #endif // BOMBA_H

@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QGraphicsScene>
+#include <QGraphicsView>
 #include <QTimer>
 #include <bomba.h>
 
@@ -23,11 +24,14 @@ private slots:
     void actualizarEstado();
     void eliminarBomba();
     void iniciarJuego();
+    void moverBomba();
 
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
+    QGraphicsView *view;
     Bomba *bomba;
     QTimer *timer = new QTimer(); //objeto tipo qtimer
+
 };
 #endif // MAINWINDOW_H

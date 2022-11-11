@@ -40,8 +40,40 @@ void Bomba::cuentaRegresiva()
     if(detonada){
         if(tiempo > 0){
             tiempo--;
+            parpadear();
         }else{
             explocion();
         }
     }
+}
+
+// Cambiar el color de la bomba
+void Bomba::parpadear(){
+}
+
+int Bomba::setX(int x)
+{
+    this->x = x;
+}
+
+int Bomba::setY(int y)
+{
+    this->y = y;
+}
+
+int Bomba::moverBomba(int x, int y)
+{
+    this->x = x;
+    this->y = y;
+    setPos(x,y);
+}
+
+int Bomba::getX()
+{
+    return x;
+}
+
+int Bomba::getY()
+{
+    return y;
 }

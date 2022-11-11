@@ -8,7 +8,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     scene = new QGraphicsScene();
-    ui->escena->setScene(scene);
+    view = new QGraphicsView(scene);
+    //ui->escena->setScene(scene);
 
     bomba = new Bomba(); //Se crea un objeto de tipo bomba
     scene->addItem(bomba); //Agrega la bomba a la escena
@@ -24,6 +25,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::actualizarEstado(){
     bomba->cuentaRegresiva();
+//    moverBomba();
+    //eliminarBomba();
 }
 
 void MainWindow::detonarBomba(){
@@ -31,12 +34,21 @@ void MainWindow::detonarBomba(){
 }
 
 void MainWindow::eliminarBomba(){
-    if(bomba->explocion()==true){
+    bool explocion = bomba->explocion();
+    if(explocion){
         scene->removeItem(bomba);
+        delete bomba;
     }
 }
 
 void MainWindow::iniciarJuego(){
     detonarBomba();
     timer->start(1000);
+    view->show();
+}
+
+void MainWindow::moverBomba(){
+    int x = bomba->getX() + 1;
+    int y = bomba->getY() + 1;
+    bomba->moverBomba(x,y);
 }
