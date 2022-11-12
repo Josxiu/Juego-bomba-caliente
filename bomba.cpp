@@ -1,17 +1,13 @@
 #include "bomba.h"
-
+#include <QGraphicsScene>
 Bomba::Bomba()
 {
-    x = 100, y = 100, radio = 25;
-    setPos(x,y);
-}
+    x = 0, y = 0, radio = 15;
 
-Bomba::Bomba(int x, int y, int radio)
-{
-    this->x=x;
-    this->y=y;
-    this->radio=radio;
-    setPos(x,y);
+    //Se crea un puntero a un objeto qtimer y se conecta con el slot estadoBomba();
+    //QTimer * timer = new QTimer();
+    connect(timer, SIGNAL(timeout()),this,SLOT(actualizarEstado()));
+    timer->start(1000); // Cada segundo se actualizara el estado de la bomba
 }
 
 QRectF Bomba::boundingRect() const
@@ -25,14 +21,9 @@ void Bomba::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     painter->drawEllipse(boundingRect());
 }
 
-bool Bomba::explocion()
-{
-    explota = true;
-}
-
 void Bomba::detonarBomba()
 {
-    detonada = true;
+    detonada = true; // Activamos la cuenta regresiva
 }
 
 void Bomba::cuentaRegresiva()
@@ -42,7 +33,7 @@ void Bomba::cuentaRegresiva()
             tiempo--;
             parpadear();
         }else{
-            explocion();
+            explotarBomba();
         }
     }
 }
@@ -51,21 +42,30 @@ void Bomba::cuentaRegresiva()
 void Bomba::parpadear(){
 }
 
-int Bomba::setX(int x)
+void Bomba::setX(int x)
 {
     this->x = x;
 }
 
-int Bomba::setY(int y)
+void Bomba::setY(int y)
 {
     this->y = y;
 }
 
-int Bomba::moverBomba(int x, int y)
+void Bomba::moverBomba(int x, int y)
 {
     this->x = x;
     this->y = y;
     setPos(x,y);
+}
+
+void Bomba::explotarBomba()
+{
+    // Se elimina la bomba del escenario y se libera la memoria
+    scene()->removeItem(this);
+    delete timer;
+    delete this;
+
 }
 
 int Bomba::getX()
@@ -76,4 +76,9 @@ int Bomba::getX()
 int Bomba::getY()
 {
     return y;
+}
+
+void Bomba::actualizarEstado()
+{
+    cuentaRegresiva(); // Se llama a la funcion cuentaRegresiva
 }

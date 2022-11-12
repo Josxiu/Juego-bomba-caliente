@@ -1,15 +1,15 @@
-#include "mainwindow.h"
-#include <iostream>
+#include "juego.h"
+
 #include <QApplication>
-#include <QGraphicsView>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    //w.show();
-//    QGraphicsScene * escena = new QGraphicsScene;
-//    QGraphicsView *view = new QGraphicsView(escena);
-//    view->show();
+    Juego juego;
+    juego.show();
+    juego.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    juego.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+
     return a.exec();
 }
