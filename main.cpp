@@ -1,15 +1,13 @@
 #include "juego.h"
 
 #include <QApplication>
+Juego *juego; // Se crea una variable global para acceder desde las otras clases
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Juego juego;
-    juego.show();
-    juego.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    juego.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
+    juego = new Juego();
+    juego->show();
 
     return a.exec();
 }

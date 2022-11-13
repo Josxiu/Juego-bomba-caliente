@@ -4,18 +4,22 @@
 #include <QObject>
 #include <QPainter>
 #include <QGraphicsItem>
+#include <QGraphicsScene>
 #include <QTimer>
+#include <QMediaPlayer> // Libreria para reproducir sonidos
+#include <QAudioOutput>
 
 class Bomba : public QObject, public QGraphicsItem
 {
     Q_OBJECT
 private:
-    int x, y;
     int radio;
-    int tiempo = 5; //Tiempo de la cuenta regresiva
+    int tiempo = 3*10; //Tiempo de la cuenta regresiva
     bool detonada = false;
     bool explota = false;
-    QTimer * timer = new QTimer();
+    QTimer * timer = new QTimer(this);
+    QMediaPlayer * media;
+    QAudioOutput * explocion;
 
 public:
     Bomba();
@@ -26,13 +30,9 @@ public:
     void cuentaRegresiva();
     void parpadear();
 
-    void setX(int x);
-    void setY(int y);
-    void moverBomba(int x, int y);
+    void moverBomba();
     void explotarBomba();
 
-    int getX();
-    int getY();
 public slots:
     void actualizarEstado();
 };

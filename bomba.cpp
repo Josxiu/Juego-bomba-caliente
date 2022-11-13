@@ -1,18 +1,26 @@
 #include "bomba.h"
-#include <QGraphicsScene>
+#include <juego.h>
+extern Juego * juego;
 Bomba::Bomba()
 {
-    x = 0, y = 0, radio = 15;
+    radio = 15;
 
     //Se crea un puntero a un objeto qtimer y se conecta con el slot estadoBomba();
     //QTimer * timer = new QTimer();
     connect(timer, SIGNAL(timeout()),this,SLOT(actualizarEstado()));
-    timer->start(1000); // Cada segundo se actualizara el estado de la bomba
+    timer->start(100); // Cada segundo se actualizara el estado de la bomba
+
+    // Configuramos el sonido de la explocion
+    media = new QMediaPlayer();
+    explocion = new QAudioOutput(media);
+    media->setAudioOutput(explocion);
+    media->setSource(QUrl::fromLocalFile("qrc:/sonidos/mi_explosion_03_hpx.mp3"));
+    explocion->setVolume(100);
 }
 
 QRectF Bomba::boundingRect() const
 {
-    return QRectF(x,y,2*radio,2*radio);
+    return QRectF(0,0,2*radio,2*radio);
 }
 
 void Bomba::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -42,43 +50,26 @@ void Bomba::cuentaRegresiva()
 void Bomba::parpadear(){
 }
 
-void Bomba::setX(int x)
+void Bomba::moverBomba()
 {
-    this->x = x;
-}
 
-void Bomba::setY(int y)
-{
-    this->y = y;
-}
-
-void Bomba::moverBomba(int x, int y)
-{
-    this->x = x;
-    this->y = y;
-    setPos(x,y);
+    setPos(x()+5,y());
 }
 
 void Bomba::explotarBomba()
 {
+    //Reproducimos el sonido de la bomba explotando
+    media->play();
+
     // Se elimina la bomba del escenario y se libera la memoria
     scene()->removeItem(this);
-    delete timer;
     delete this;
 
 }
 
-int Bomba::getX()
-{
-    return x;
-}
-
-int Bomba::getY()
-{
-    return y;
-}
 
 void Bomba::actualizarEstado()
 {
+    moverBomba();
     cuentaRegresiva(); // Se llama a la funcion cuentaRegresiva
 }

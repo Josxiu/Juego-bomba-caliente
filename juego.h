@@ -5,19 +5,20 @@
 #include <QGraphicsScene>
 #include <QKeyEvent>
 #include <bomba.h>
+#include <QMediaPlayer> // Libreria para reproducir sonidos
+#include <QAudioOutput>
 #include "personaje.h"
 
 class Juego : public QGraphicsView
 {
     Q_OBJECT
-private:
-    Bomba *bomba; // objeto bomba
-    Personaje *jugador;
-    QGraphicsScene * escenario; // escenario del juego
-
 public:
-    Juego();
-    void keyPressEvent(QKeyEvent *event);
+    Bomba *bomba; // objeto bomba
+    Personaje *jugador; // Personaje que controla el jugador
+    QGraphicsScene * escenario; // escenario del juego
+public:
+    Juego(QWidget * parent=0);
+    void keyPressEvent(QKeyEvent *event); // Metodo para detectar las teclas presionadas
     ~Juego();
 };
 #endif // JUEGO_H

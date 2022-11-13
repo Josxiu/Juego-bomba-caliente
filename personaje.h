@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QGraphicsItem>
 #include <QPainter>
+#include <bomba.h>
 
 class Personaje : public QObject, public QGraphicsItem
 {
@@ -15,6 +16,7 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void moverPersonaje(int x, int y);
+    void tirarBomba();
 };
 
 #endif // PERSONAJE_H

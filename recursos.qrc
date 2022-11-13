@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/sonidos">
+        <file>Vitality_-_Electro_Shock_Sport_Dance.mp3</file>
+        <file>mi_explosion_03_hpx.mp3</file>
+    </qresource>
+    <qresource prefix="/imagenes">
+        <file>imagenes/arena.jpg</file>
+    </qresource>
+</RCC>

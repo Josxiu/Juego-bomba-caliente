@@ -1,10 +1,13 @@
 #include "juego.h"
+#include <QString>
+#include <QBrush>
+#include <QImage>
 
-Juego::Juego()
+Juego::Juego(QWidget * parent)
 {
-    bomba = new Bomba(); // creamos una bomba
     escenario = new QGraphicsScene(); // creamos un escenario
-    escenario->addItem(bomba); // agregamos la bomba al escenario
+//    bomba = new Bomba(); // creamos una bomba
+//    escenario->addItem(bomba); // agregamos la bomba al escenario
 
     //Se crea y se agrega el jugador a la escena
     jugador = new Personaje();
@@ -13,6 +16,21 @@ Juego::Juego()
     this->setScene(escenario); // Visualisamos la escena
     this->setFixedSize(800,600); // Tamaño de la ventana grafica
     escenario->setSceneRect(0,0,800,600); //Tamaño de la escena
+
+    // Se pinta el fondo del escenario
+    setBackgroundBrush(QBrush(QImage( ":/imagenes/imagenes/arena.jpg")));
+
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    //Musica de fondo / creamos los objetos para el reproductor y la salida de audio
+    QMediaPlayer * reproductor = new QMediaPlayer;
+    QAudioOutput * soundtrack = new QAudioOutput;
+    reproductor->setAudioOutput(soundtrack);
+    reproductor->setSource(QUrl::fromLocalFile("qrc:/sonidos/Vitality_-_Electro_Shock_Sport_Dance.mp3"));
+    soundtrack->setVolume(50); // Ajustamos el volumen
+    reproductor->play(); // Reproducimos el soundtrack
+    reproductor->setLoops(QMediaPlayer::Infinite); // Hacemos que se repita cuando se acabe
 }
 
 void Juego::keyPressEvent(QKeyEvent *event)
@@ -43,8 +61,9 @@ void Juego::keyPressEvent(QKeyEvent *event)
             jugador->moverPersonaje(x,y);
     }
     else if (event->key() == Qt::Key_Space){
-        bomba->detonarBomba(); // se detona la bomba
-        qDebug() << "Bomba activada";
+//        bomba->detonarBomba(); // se detona la bomba
+        jugador->tirarBomba();
+        qDebug() << "Bomba lanzada";
     }
 
 }
