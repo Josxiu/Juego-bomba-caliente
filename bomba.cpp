@@ -1,9 +1,10 @@
 #include "bomba.h"
 #include <juego.h>
-extern Juego * juego;
-Bomba::Bomba()
+//extern Juego * juego;
+Bomba::Bomba(QObject * parent) : QObject(parent)
 {
-    radio = 15;
+    radio = 25;
+    velocidad = 5;
 
     //Se crea un puntero a un objeto qtimer y se conecta con el slot estadoBomba();
     //QTimer * timer = new QTimer();
@@ -36,7 +37,7 @@ void Bomba::detonarBomba()
 
 void Bomba::cuentaRegresiva()
 {
-    if(detonada){
+    if(detonada){ // Si la bomba se detono entonces se inicia una cuenta regresiva
         if(tiempo > 0){
             tiempo--;
             parpadear();
@@ -50,10 +51,37 @@ void Bomba::cuentaRegresiva()
 void Bomba::parpadear(){
 }
 
+void Bomba::colision()
+{
+    // Si la bomba choca con un enemigo se destruyen ambos
+    // En una lista se guardan todos los objetos con los que esta colisionando la bomba
+    QList<QGraphicsItem *> colliding_items = collidingItems();
+    // Si la bomba choca con el jugador se le resta una vida
+    for (int i = 0, n = colliding_items.size(); i < n; ++i)
+    {
+        if (typeid(*(colliding_items[i])) == typeid(Jugador))
+        {
+            // Se hace estallar la bomba
+            explotarBomba();
+            // Se le resta una vida al jugador
+            Jugador *jugador = dynamic_cast<Jugador *>(colliding_items[i]);
+            jugador->vidaJugador();
+        }
+    }
+}
+
 void Bomba::moverBomba()
 {
 
-    setPos(x()+5,y());
+    int mover = velocidad * dirX;
+    setPos(x()+mover,y()); // Se mueve en la direccion que se lanza
+    //colision();
+}
+
+// Recibe -1 o 1 para fijar la direccion en x
+void Bomba::setDirX(int dir)
+{
+    dirX = dir; // Se invierte la direccion
 }
 
 void Bomba::explotarBomba()
@@ -67,9 +95,10 @@ void Bomba::explotarBomba()
 
 }
 
-
+// Se actualiza el estado de la bomba
 void Bomba::actualizarEstado()
 {
-    moverBomba();
+    moverBomba(); // Cada 100 milisegundos se actualiza la posicion
     cuentaRegresiva(); // Se llama a la funcion cuentaRegresiva
+    colision(); // Se verifica si la bomba colisiona con algun objeto
 }

@@ -12,13 +12,17 @@ CONFIG += c++
 
 SOURCES += \
     bomba.cpp \
+    enemigo.cpp \
+    jugador.cpp \
     main.cpp \
     juego.cpp \
     personaje.cpp
 
 HEADERS += \
     bomba.h \
+    enemigo.h \
     juego.h \
+    jugador.h \
     personaje.h
 
 # Default rules for deployment.

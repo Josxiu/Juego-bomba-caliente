@@ -1,19 +1,8 @@
 #include "personaje.h"
 
-Personaje::Personaje()
+Personaje::Personaje(QObject *parent) : QObject(parent)
 {
-
-}
-
-QRectF Personaje::boundingRect() const
-{
-    return QRectF(0,0,25,50);
-}
-
-void Personaje::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    painter->setBrush(Qt::blue);
-    painter->drawRect(boundingRect());
+    vida = 3;
 }
 
 void Personaje::moverPersonaje(int x, int y)
@@ -22,10 +11,25 @@ void Personaje::moverPersonaje(int x, int y)
     setPos(this->x() + x, this->y() + y);
 }
 
-void Personaje::tirarBomba()
+// Ubica la bomba hacia al frente de donde este mirando el personaje
+void Personaje::posicionBomba(Bomba *bomba)
 {
-    Bomba *bomba = new Bomba();
-    bomba->setPos(x(),y()); // Posicionamos la bomba donde se encuentre el jugador
+    if(direccion == 1){
+        bomba->setPos(this->x() + ancho, this->y() + altura/4);
+    }else{
+        bomba->setPos(this->x() - (bomba->radio*2), this->y() + altura/4);
+    }
+
+    // bomba->setPos(x(),y()); // Posicionamos la bomba donde se encuentre el personaje
+
+}
+
+Bomba *Personaje::tirarBomba()
+{
+    Bomba *bomba = new Bomba(this); // Se crea una nueva bomba
+    posicionBomba(bomba); // Se ubica al frente del personaje
+    bomba->setDirX(direccion); // Se tira la bomba en la direccion a la que se dirige el personaje
     scene()->addItem(bomba);
-    bomba->detonarBomba();
+    bomba->detonarBomba(); // En el momento en que se lanza se detona la bomba
+    return bomba;
 }
