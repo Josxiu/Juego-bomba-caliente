@@ -1,7 +1,7 @@
 #include "jugador.h"
 #include <juego.h>
 #include <QList>
-extern Juego * juego;
+extern Juego * juego; // Se accede a la variable global en la que se encuentra el juego
 
 
 Jugador::Jugador(QObject *parent)
