@@ -12,18 +12,26 @@ CONFIG += c++
 
 SOURCES += \
     bomba.cpp \
+    bombajefe.cpp \
     enemigo.cpp \
+    jefe.cpp \
     jugador.cpp \
     main.cpp \
     juego.cpp \
-    personaje.cpp
+    personaje.cpp \
+    puntaje.cpp \
+    vidajugador.cpp
 
 HEADERS += \
     bomba.h \
+    bombajefe.h \
     enemigo.h \
+    jefe.h \
     juego.h \
     jugador.h \
-    personaje.h
+    personaje.h \
+    puntaje.h \
+    vidajugador.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

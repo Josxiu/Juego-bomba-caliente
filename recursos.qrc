@@ -5,5 +5,13 @@
     </qresource>
     <qresource prefix="/imagenes">
         <file>imagenes/arena.jpg</file>
+        <file>imagenes/bomba.png</file>
+        <file>imagenes/roja.png</file>
+        <file>imagenes/Bomba Explosion.png</file>
+        <file>imagenes/Enemigo.png</file>
+        <file>imagenes/jugador.png</file>
+        <file>imagenes/enemigoDerecha.png</file>
+        <file>imagenes/explosion.png</file>
+        <file>imagenes/jefe.png</file>
     </qresource>
 </RCC>

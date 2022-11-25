@@ -18,6 +18,15 @@ Juego::Juego(QWidget * parent) : QGraphicsView(parent)
     jugador->setPos(width()/2,height()/2); // Se posiciona el jugador en la mitad del escenario
     escenario->addItem(jugador);
 
+    // Se agrega el puntaje y la vida al escenario
+    puntaje = new Puntaje();
+    puntaje->setPos(puntaje->x(),puntaje->y()+25);
+    escenario->addItem(puntaje);
+
+    vida = new VidaJugador();
+    vida->setPos(vida->x(),vida->y());
+    escenario->addItem(vida);
+
     // Se pinta el fondo del escenario
     setBackgroundBrush(QBrush(QImage( ":/imagenes/imagenes/arena.jpg")));
     // Se fija la pantalla para que no se haga mas grande si un objeto sale del escenario
@@ -33,6 +42,7 @@ Juego::Juego(QWidget * parent) : QGraphicsView(parent)
     reproductor->play(); // Reproducimos el soundtrack
     reproductor->setLoops(QMediaPlayer::Infinite); // Hacemos que se repita cuando se acabe
 
+    //crearJefe();
     // se inicializa el timer y se conecta con el slot generarEnemigo()
     tiempo = new QTimer(this);
     connect(tiempo,SIGNAL(timeout()),this,SLOT(generarEnemigo()));
@@ -97,12 +107,27 @@ void Juego::gameOver(){
     int respuesta = msgBox.exec();
     if (respuesta == QMessageBox::Yes){
         qDebug() << "Si";
-        // Se reinicia el juego
+        // Se reinicia el juego y se inicializa todo otra vez
         escenario->clear();
+        delete escenario;
+        escenario = new QGraphicsScene();
+        this->setScene(escenario);
+        escenario->setSceneRect(0,0,800,600);
+        setBackgroundBrush(QBrush(QImage( ":/imagenes/imagenes/arena.jpg")));
+        setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         jugador = new Jugador();
-        jugador->setPos(width()/2,height()/2); // Se posiciona el jugador en la mitad del escenario
+        jugador->setPos(width()/2,height()/2);
         escenario->addItem(jugador);
-        tiempo->start(3000); // cada 3 segundos se genera un nuevo enemigo
+        puntaje = new Puntaje();
+        puntaje->setPos(puntaje->x(),puntaje->y()+25);
+        escenario->addItem(puntaje);
+        vida = new VidaJugador();
+        vida->setPos(vida->x(),vida->y());
+        escenario->addItem(vida);
+        tiempo->start(3000);
+        //crearJefe();
+        
     }
     else if (respuesta == QMessageBox::No){
         qDebug() << "No";
@@ -111,13 +136,30 @@ void Juego::gameOver(){
     }
 }
 
+void Juego::crearJefe(){
+    jefe = new Jefe();
+    // El jefe aparece en la mitad derecha del escenario
+    jefe->setPos(this->width() - jefe->ancho - 15, this->height()/2);
+    escenario->addItem(jefe);
+}
+
 Juego::~Juego()
 {
 }
 
 void Juego::generarEnemigo()
 {
-    Enemigo * enemigo = new Enemigo();
-    escenario->addItem(enemigo);
+    if (puntaje->getPuntaje() <10){
+        Enemigo * enemigo = new Enemigo();
+        escenario->addItem(enemigo);
+    }
+    else{
+        if(faseFinal == 0){
+            crearJefe();
+            faseFinal = 1;
+        }
+    }
+
+
 }
 

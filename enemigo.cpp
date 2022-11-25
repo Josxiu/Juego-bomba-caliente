@@ -1,5 +1,8 @@
 #include "enemigo.h"
 #include <QList>
+#include <juego.h>
+extern Juego * juego; // Se crea una variable externa para poder acceder a los atributos de la clase juego
+
 
 Enemigo::Enemigo(QObject *parent)
     : Personaje(parent)
@@ -34,8 +37,27 @@ QRectF Enemigo::boundingRect() const
 
 void Enemigo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    painter->setBrush(Qt::red);
-    painter->drawRect(boundingRect());
+    //    painter->setBrush(Qt::red);
+    //    painter->drawRect(boundingRect());
+
+
+    //painter->drawPixmap(boundingRect(),*pxmap,pxmap->rect());
+
+    // Si mira a la derecha
+    if(direccion == 1){
+            pxmap = new QPixmap(":/imagenes/imagenes/enemigoDerecha.png");
+
+        painter->drawPixmap(boundingRect(),*pxmap,pxmap->rect());
+    }
+
+    // Si mira a la izquierda
+    if(direccion == -1){
+            pxmap = new QPixmap(":/imagenes/imagenes/Enemigo.png");
+
+        painter->drawPixmap(boundingRect(),*pxmap,pxmap->rect());
+    }
+
+
 }
 
 Bomba *Enemigo::tirarBomba()
@@ -84,6 +106,14 @@ void Enemigo::colision()
             Bomba * bomba = dynamic_cast<Bomba *>(colliding_items[i]); // Se accede al puntero de la bomba que colisiona
             bomba->explotarBomba(); // Se hace estallar la bomba
             vidaEnemigo(); // Se le resta 1 de vida al enemigo despues de que la bomba lo toque
+
+            // si la bomba con la que se impacta es una bomba del jugador se le suma 1 de puntaje
+            if (bomba->getTipo() == 1){
+                // Si una bomba del jugador impacta con el enemigo se aumenta el puntaje
+                juego->puntaje->incrementar();
+
+            }
+
         }
     }
 }

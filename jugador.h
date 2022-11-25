@@ -8,6 +8,7 @@ class Jugador : public Personaje
     Q_OBJECT
 
 private:
+    QPixmap * pxmap;
 
 public:
     explicit Jugador(QObject *parent = nullptr);
